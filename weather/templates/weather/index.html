@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container alert alert-dark">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
           <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
@@ -30,18 +30,29 @@
         <div class="row">
             <div class="col-5 offset-1">
                 <h1>Погода в вашем городе</h1>
-                <form action="">
+                <form action="" method="post">
+                  {% csrf_token %}
                     <label for="city">Город</label>
-                    <input type="text" class="form-control" id="city" name="city" placeholder="Введите город">
+                    {{ form.name }}
                     <input type="submit" name="send" value="Узнать" class="btn btn-danger mt-2">
                 </form>
 
             </div>
             <div class="col-4 offset-1">
                 <h1>Информация</h1> 
-                <div class="alert alert-danger">
-                    Погода в Ташкенте
+                {% for info in all_info %}
+                <div class="alert alert-dark">
+                  <div class="row">
+                    <div class="col-9">
+                      <b>Город:</b> {{ info.city }}<br>
+                      <b>Температура:</b> {{ info.temp }}<sup>0</sup><br>
+                    </div>
+                    <div class="col-2 offset-1">
+                      <img src="https://openweathermap.org/img/w/{{ info.icon }}.png" alt="" class="img-thumbnail">
+                    </div>
+                  </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
       </div>
